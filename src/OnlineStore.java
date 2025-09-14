@@ -44,7 +44,6 @@ public class OnlineStore {
         } catch (ProductNotFoundException e) {
             System.out.println("Ошибка: " + e.getMessage());
         }
-
         try {
             Product notFound = store.findProductById(999);
             System.out.println("Найден продукт: " + notFound);
