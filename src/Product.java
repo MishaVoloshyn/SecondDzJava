@@ -25,3 +25,4 @@ public abstract class Product implements Purchasable {
         System.out.println("Покупка продукта: " + name + " за $" + price);
     }
 }
+
