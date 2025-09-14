@@ -12,26 +12,44 @@ public class OnlineStore {
     public List<User> getUsers() {
         return users;
     }
-    public static void purchaseAll(Purchasable[] items) {
-        for (Purchasable item : items) {
-            item.purchase();
+    public Product findProductById(int id) throws ProductNotFoundException {
+        for (User user : users) {
+            for (Cart cart : user.getCarts()) {
+                for (Product product : cart.getProducts()) {
+                    if (product.getId() == id) {
+                        return product;
+                    }
+                }
+            }
         }
+        throw new ProductNotFoundException("Продукт с id=" + id + " не найден!");
     }
-
     public static void main(String[] args) {
         OnlineStore store = new OnlineStore();
-        PhysicalProduct phone = new PhysicalProduct("iPhone", "Apple", 999, 0.5);
-        DigitalProduct game = new DigitalProduct("Cyberpunk 2077", "CDPR", 59, "ABC-123-XYZ");
 
-        Cart cart1 = new Cart();
-        cart1.addProduct(phone);
-        cart1.addProduct(game);
+        PhysicalProduct laptop = new PhysicalProduct("Laptop", "Lenovo", 1200, 2.5);
+        DigitalProduct ebook = new DigitalProduct("Java Book", "O'Reilly", 15, "XYZ-111");
 
-        User user1 = new User("Alex", 1);
-        user1.addCart(cart1);
-        store.addUser(user1);
+        Cart cart = new Cart();
+        cart.addProduct(laptop);
+        cart.addProduct(ebook);
 
-        Purchasable[] items = { phone, game };
-        OnlineStore.purchaseAll(items);
+        User user = new User("Olena", 101);
+        user.addCart(cart);
+        store.addUser(user);
+
+        try {
+            Product found = store.findProductById(ebook.getId());
+            System.out.println("Найден продукт: " + found);
+        } catch (ProductNotFoundException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product notFound = store.findProductById(999);
+            System.out.println("Найден продукт: " + notFound);
+        } catch (ProductNotFoundException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
     }
 }
