@@ -24,6 +24,7 @@ public class OnlineStore {
         }
         throw new ProductNotFoundException("Продукт с id=" + id + " не найден!");
     }
+
     public static void main(String[] args) {
         OnlineStore store = new OnlineStore();
 
